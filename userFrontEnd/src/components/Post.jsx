@@ -37,6 +37,18 @@ export default function Post() {
     );
   }
 
+  function refreshPost() {
+    fetch(`http://localhost:3000/posts/${params.postId}`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => setPost(res.post))
+      .catch((err) => console.log(err));
+  }
+
   async function submitComment(e) {
     e.preventDefault();
     const res = await fetch(`http://localhost:3000/comment/${params.postId}`, {
@@ -54,6 +66,7 @@ export default function Post() {
     if (res.status === 200) {
       setNewComment("");
       setNewCommentErrors([]);
+      refreshPost();
     } else {
       const errors = await res.json();
       setNewCommentErrors(errors.errors);
@@ -107,7 +120,11 @@ export default function Post() {
         )}
         {post.comments &&
           post.comments.map((comment) => (
-            <Comment key={comment.id} comment={comment}></Comment>
+            <Comment
+              key={comment.id}
+              comment={comment}
+              refreshPost={refreshPost}
+            ></Comment>
           ))}
       </div>
     </div>

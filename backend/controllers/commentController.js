@@ -29,6 +29,28 @@ const createComment = [
   },
 ];
 
+const deleteComment = [
+  passport.authenticate("jwt", { session: false }),
+  async (req, res, next) => {
+    try {
+      const comment = await db.getComment(parseInt(req.params.commentId));
+      if (comment.authorId !== req.user.id) {
+        res
+          .status(401)
+          .json({ msg: "User not authorized to delete this comment" });
+      }
+
+      const deletedComment = await db.deleteComment(
+        parseInt(req.params.commentId)
+      );
+      res.status(200).json({ comment: deletedComment });
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
+
 module.exports = {
   createComment,
+  deleteComment,
 };

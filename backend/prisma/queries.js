@@ -61,6 +61,7 @@ async function getPostById(id) {
           id: true,
           author: {
             select: {
+              id: true,
               username: true,
             },
           },
@@ -129,6 +130,14 @@ async function createComment(postId, authorId, content) {
   });
 }
 
+async function getComment(id) {
+  return await prisma.comment.findUnique({
+    where: {
+      id,
+    },
+  });
+}
+
 async function updateComment(id, content) {
   return await prisma.comment.update({
     where: {
@@ -159,6 +168,7 @@ module.exports = {
   updatePostContent,
   deletePost,
   createComment,
+  getComment,
   updateComment,
   deleteComment,
 };
