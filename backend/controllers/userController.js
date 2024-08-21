@@ -7,38 +7,42 @@ const validateUser = [
   body("username")
     .trim()
     .matches(/^[A-Za-z0-9-_]+$/)
-    .withMessage('Username must only contain alphanumeric or "-_" characters')
+    .withMessage('Username must only contain alphanumeric or "-_" characters.')
     .isLength({ min: 1, max: 20 })
-    .withMessage("Username must be between 1 and 20 characters long")
+    .withMessage("Username must be between 1 and 20 characters long.")
     .custom(async (value) => {
       const user = await db.findUserByUsername(value);
       if (user) {
         throw new Error("Username taken");
       }
     }),
+  body("password")
+    .isLength({ min: 1 })
+    .withMessage("Password must be at least 1 character long."),
   body("confirmPassword")
     .custom((value, { req }) => {
       return value === req.body.password;
     })
-    .withMessage("Password and Confirm Password must match"),
+    .withMessage("Password and Confirm Password must match."),
 ];
 
 async function login(req, res, next) {
   try {
     const user = await db.findUserByUsername(req.body.username);
     if (!user) {
-      return res.status(401).json({ msg: "Invalid username" });
+      return res.status(401).json({ msg: "Invalid username." });
     }
 
     const match = await bcrypt.compare(req.body.password, user.password);
     if (!match) {
-      return res.status(401).json({ msg: "Invalid password " });
+      return res.status(401).json({ msg: "Invalid password." });
     }
 
     const expiresIn = "7d";
 
     const payload = {
       sub: user.id,
+      user: user.username,
       iat: Date.now(),
     };
 

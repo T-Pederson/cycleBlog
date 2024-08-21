@@ -1,28 +1,18 @@
+import PostPreview from "./PostPreview";
 import NavBar from "./NavBar";
 
-export default function Home() {
-  async function getPosts() {
-    if (localStorage.getItem("token")) {
-      const res = await fetch("http://localhost:3000/posts", {
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-          "Authorization": localStorage.getItem("token"),
-        },
-      });
-  
-      const posts = await res.json();
-  
-      console.log(posts);
-    }
-  };
-
-  getPosts();
-
+export default function Home({ posts }) {
   return (
-    <div className="mx-auto max-w-5xl ">
+    <div className="max-w-6xl m-4 sm:mx-auto grid gap-8">
       <NavBar />
-      <h1>Welcome to Cycle Blog!</h1>
+      <h1 className="font-extrabold text-3xl mx-auto w-max">
+        Welcome to Cycle Blog!
+      </h1>
+      <div className="grid gap-8">
+        {posts.map((post) => (
+          <PostPreview post={post} key={post.id} />
+        ))}
+      </div>
     </div>
   );
 }

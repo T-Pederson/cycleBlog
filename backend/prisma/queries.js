@@ -49,17 +49,21 @@ async function getPostById(id) {
   });
 }
 
-async function getAllPostsForUser(id) {
+async function getAllPosts() {
   return await prisma.post.findMany({
     where: {
-      OR: [
-        {
-          authorId: id,
+      published: true,
+    },
+    select: {
+      id: true,
+      title: true,
+      content: true,
+      publishedAt: true,
+      author: {
+        select: {
+          username: true,
         },
-        {
-          published: true,
-        },
-      ],
+      },
     },
     orderBy: {
       publishedAt: "desc",
@@ -146,7 +150,7 @@ module.exports = {
   findUserById,
   createPost,
   getPostById,
-  getAllPostsForUser,
+  getAllPosts,
   updatePostContent,
   updatePostPublishedStatus,
   deletePost,
