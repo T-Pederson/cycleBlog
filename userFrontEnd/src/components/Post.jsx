@@ -115,6 +115,14 @@ export default function Post() {
             >
               Login
             </Link>{" "}
+            or{" "}
+            <Link
+              to="/sign-up"
+              className="underline hover:opacity-65"
+              state={{ from: location.pathname }}
+            >
+              Sign Up
+            </Link>{" "}
             to leave a comment!
           </p>
         )}

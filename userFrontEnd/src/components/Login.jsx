@@ -70,13 +70,19 @@ export default function Login() {
           </button>
         </form>
       )}
-
-      <Link
-        to={from}
-        className="flex w-full justify-center underline hover:opacity-65"
-      >
-        Cancel
-      </Link>
+      <p className="text-center">
+        <Link to={from} className="underline hover:opacity-65">
+          Cancel
+        </Link>{" "}
+        or{" "}
+        <Link
+          to={"/sign-up"}
+          className="underline hover:opacity-65"
+          state={{ from: from }}
+        >
+          Sign Up
+        </Link>
+      </p>
     </div>
   );
 }

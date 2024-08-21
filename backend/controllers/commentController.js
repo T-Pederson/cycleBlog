@@ -50,7 +50,35 @@ const deleteComment = [
   },
 ];
 
+const editComment = [
+  validateComment,
+  passport.authenticate("jwt", { session: false }),
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+      const comment = await db.getComment(parseInt(req.params.commentId));
+      if (comment.authorId !== req.user.id) {
+        res
+          .status(401)
+          .json({ msg: "User not authorized to edit this comment" });
+      }
+
+      const editedComment = await db.updateComment(
+        parseInt(req.params.commentId),
+        req.body.comment
+      );
+      res.status(200).json({ comment: editedComment });
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
+
 module.exports = {
   createComment,
   deleteComment,
+  editComment,
 };
