@@ -98,7 +98,7 @@ async function getAllPosts() {
   });
 }
 
-async function updatePostContent(id, title, content, published) {
+async function updatePost(id, title, content, published) {
   return await prisma.post.update({
     where: {
       id,
@@ -165,7 +165,7 @@ module.exports = {
   createPost,
   getPostById,
   getAllPosts,
-  updatePostContent,
+  updatePost,
   deletePost,
   createComment,
   getComment,
