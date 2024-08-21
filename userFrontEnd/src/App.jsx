@@ -6,8 +6,6 @@ import Post from "./components/Post";
 import ErrorPage from "./components/ErrorPage";
 
 function App() {
-
-
   return (
     <div>
       <Routes>

@@ -6,7 +6,7 @@ export default function Home() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/posts", {
+    fetch(`${import.meta.env.VITE_API_URL}/posts`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

@@ -11,7 +11,7 @@ export default function Post() {
   const location = useLocation();
 
   useEffect(() => {
-    fetch(`http://localhost:3000/posts/${params.postId}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/posts/${params.postId}`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -38,7 +38,7 @@ export default function Post() {
   }
 
   function refreshPost() {
-    fetch(`http://localhost:3000/posts/${params.postId}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/posts/${params.postId}`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -51,7 +51,7 @@ export default function Post() {
 
   async function submitComment(e) {
     e.preventDefault();
-    const res = await fetch(`http://localhost:3000/comment/${params.postId}`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/comment/${params.postId}`, {
       method: "POST",
       headers: {
         Accept: "application/json",

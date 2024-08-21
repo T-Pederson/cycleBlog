@@ -12,7 +12,7 @@ export default function Signup() {
 
   async function submitSignup(e) {
     e.preventDefault();
-    const res = await fetch("http://localhost:3000/user/sign-up", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/user/sign-up`, {
       method: "POST",
       headers: {
         Accept: "application/json",

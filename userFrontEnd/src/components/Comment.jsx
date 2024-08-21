@@ -7,7 +7,7 @@ export default function Comment({ comment, refreshPost }) {
 
   async function deleteComment() {
     const res = await fetch(
-      `http://localhost:3000/comment/delete/${comment.id}`,
+      `${import.meta.env.VITE_API_URL}/comment/delete/${comment.id}`,
       {
         method: "POST",
         headers: {
@@ -34,7 +34,7 @@ export default function Comment({ comment, refreshPost }) {
     }
 
     const res = await fetch(
-      `http://localhost:3000/comment/edit/${comment.id}`,
+      `${import.meta.env.VITE_API_URL}/comment/edit/${comment.id}`,
       {
         method: "POST",
         headers: {
