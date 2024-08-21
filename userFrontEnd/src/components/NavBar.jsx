@@ -1,16 +1,17 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 export default function NavBar() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   function logout() {
     localStorage.removeItem("token");
-    navigate("/");
+    navigate(location.pathname);
   }
 
   return (
     <nav className="flex justify-between">
-      <Link to="/" className="font-bold">
+      <Link to="/" className="font-bold hover:opacity-65">
         Cycle Blog
       </Link>
       {localStorage.getItem("token") ? (
@@ -19,12 +20,32 @@ export default function NavBar() {
             Welcome,{" "}
             {JSON.parse(atob(localStorage.getItem("token").split(".")[1])).user}
           </span>
-          <button onClick={logout}>Log Out</button>
+          <Link to="/" className="hover:opacity-65">
+            Home
+          </Link>
+          <button onClick={logout} className="hover:opacity-65">
+            Log Out
+          </button>
         </div>
       ) : (
         <div className="flex gap-8">
-          <Link to="/login">Login</Link>
-          <Link to="/sign-up">Sign Up</Link>
+          <Link to="/" className="hover:opacity-65">
+            Home
+          </Link>
+          <Link
+            to="/login"
+            className="hover:opacity-65"
+            state={{ from: location.pathname }}
+          >
+            Login
+          </Link>
+          <Link
+            to="/sign-up"
+            className="hover:opacity-65"
+            state={{ from: location.pathname }}
+          >
+            Sign Up
+          </Link>
         </div>
       )}
     </nav>

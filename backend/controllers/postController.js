@@ -11,6 +11,16 @@ async function getAllPosts(req, res, next) {
   }
 }
 
+async function getPostById(req, res, next) {
+  try {
+    const post = await db.getPostById(parseInt(req.params.postId));
+    res.status(200).json({ post: post });
+  } catch (err) {
+    return next(err);
+  }
+}
+
 module.exports = {
   getAllPosts,
+  getPostById,
 };
