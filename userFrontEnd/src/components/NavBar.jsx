@@ -10,14 +10,14 @@ export default function NavBar() {
   }
 
   return (
-    <nav className="flex justify-between">
+    <nav className="flex justify-between text-nowrap">
       <Link to="/" className="font-bold hover:opacity-65">
         Cycle Blog
       </Link>
       {localStorage.getItem("token") ? (
-        <div className="flex gap-8">
+        <div className="flex gap-4 sm:gap-8 text-nowrap">
           <span>
-            Welcome,{" "}
+            Hi,{" "}
             {JSON.parse(atob(localStorage.getItem("token").split(".")[1])).user}
           </span>
           <Link to="/" className="hover:opacity-65">

@@ -22,21 +22,6 @@ export default function Post() {
       .catch((err) => console.log(err));
   }, [params.postId]);
 
-  if (post === null) {
-    return (
-      <div className="max-w-6xl m-4 sm:mx-auto grid gap-8">
-        <NavBar />
-        <h1 className="font-extrabold text-2xl mx-auto w-max">
-          Oops! Blog post not found, please return{" "}
-          <Link to="/" className="underline">
-            Home
-          </Link>
-          .
-        </h1>
-      </div>
-    );
-  }
-
   function refreshPost() {
     fetch(`${import.meta.env.VITE_API_URL}/posts/${params.postId}`, {
       headers: {
@@ -51,17 +36,20 @@ export default function Post() {
 
   async function submitComment(e) {
     e.preventDefault();
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/comment/${params.postId}`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        comment: newComment,
-      }),
-    });
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/comment/${params.postId}`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+        body: JSON.stringify({
+          comment: newComment,
+        }),
+      }
+    );
 
     if (res.status === 200) {
       setNewComment("");
@@ -73,11 +61,26 @@ export default function Post() {
     }
   }
 
+  if (post === null) {
+    return (
+      <div className="max-w-6xl m-4 sm:mx-auto grid gap-8">
+        <NavBar />
+        <h1 className="font-extrabold text-2xl mx-auto">
+          Oops! Blog post not found, please return{" "}
+          <Link to="/" className="underline">
+            Home
+          </Link>
+          .
+        </h1>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-6xl m-4 sm:mx-auto grid gap-8">
       <NavBar />
       <div>
-        <h1 className="font-extrabold text-3xl mx-auto w-max mb-4">
+        <h1 className="font-extrabold text-3xl mx-auto mb-4">
           {post.title}
         </h1>
         <p className="mb-4 font-semibold">
