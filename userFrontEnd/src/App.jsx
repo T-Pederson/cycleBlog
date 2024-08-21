@@ -24,11 +24,8 @@ function App() {
   return (
     <div>
       <Routes>
-        <Route
-          path="/"
-          element={<Home posts={posts} />}
-          errorElement={<ErrorPage />}
-        />
+        <Route path="*" element={<ErrorPage />} />
+        <Route path="/" element={<Home posts={posts} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/posts/:postId" element={<Post />} />

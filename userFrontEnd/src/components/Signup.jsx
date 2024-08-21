@@ -8,7 +8,7 @@ export default function Signup() {
   const [errors, setErrors] = useState([]);
   const [newUser, setNewUser] = useState(null);
   const location = useLocation();
-  const { from } = location.state;
+  const { from } = location.state || { from: "/" };
 
   async function submitSignup(e) {
     e.preventDefault();
