@@ -61,12 +61,14 @@ export default function Comment({ comment, authorId, refreshPost }) {
   return (
     <div className="grid gap-2 my-4">
       <div className="flex gap-4 items-baseline">
-        <p>
-          {comment.author.username}{" "}
-          {new Date(comment.commentedAt).toLocaleString([], {
-            timeStyle: "short",
-          })}
-        </p>
+      <div>
+          <span className="font-semibold">{comment.author.username} </span>
+          <span>
+            {new Date(comment.commentedAt).toLocaleString([], {
+              timeStyle: "short",
+            })}
+          </span>
+        </div>
         {localStorage.getItem("token") &&
           JSON.parse(atob(localStorage.getItem("token").split(".")[1])).sub ==
             authorId && (
