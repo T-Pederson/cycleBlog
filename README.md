@@ -3,8 +3,12 @@
 ## _Come With Me On My Cycling Journey_
 
 Cycle Blog is a full-stack web app to discuss all things cycling!
+
 React powered front end, Express and PostgreSQL powered back end.
+
 Built by [Tyson Pederson](https://tysonpederson.netlify.app/).
+
+[Live Repo Here](https://cycleblog-user.netlify.app/)
 
 ## Features
 
@@ -19,13 +23,13 @@ Built by [Tyson Pederson](https://tysonpederson.netlify.app/).
 
 Cycle Blog uses a number of open source projects to work properly:
 
-#### Front End
+### Front End
 
 - [React] - Front end framework for web apps
 - [Vite] - Build tool for faster app development
 - [TailWind] - CSS framework for web apps
 
-#### Back End
+### Back End
 
 - [Node.js] - evented I/O for the backend
 - [Express] - fast Node.js network app framework
@@ -38,11 +42,12 @@ And of course Cycle Blog itself is open source with a [public repository][public
 
 ## Installation
 
-#### Back End
+### Back End
 
 CycleBlog requires [Node.js] and [PostgreSQL] to run.
 
 [Connect](https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases/connect-your-database-typescript-postgresql) and [migrate](https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases/using-prisma-migrate-typescript-postgresql) to the database with PostgreSQL if unfamiliar.
+
 Make sure the .env file is created in the root of the backend folder.
 
 Add your secret for [Passport-jwt](https://www.passportjs.org/packages/passport-jwt/#:~:text=opts.secretOrKey%20%3D%20%27secret%27%3B) to the .env file.
@@ -59,7 +64,7 @@ npm i
 node app.js
 ```
 
-#### Front End
+### Front End
 
 The front end is separated into two web apps, a user app and an author app.
 The setup is the same for both apps.
