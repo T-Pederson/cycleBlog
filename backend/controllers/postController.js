@@ -1,5 +1,12 @@
 const passport = require("passport");
 const db = require("../prisma/queries");
+const { body, validationResult } = require("express-validator");
+
+const validateTitle = [
+  body("title")
+    .isLength({ min: 1 })
+    .withMessage("Title must be at least 1 character long."),
+];
 
 async function getAllPosts(req, res, next) {
   try {
@@ -13,11 +20,13 @@ async function getAllPosts(req, res, next) {
 const getAuthorPosts = [
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
-    if (parseInt(req.params.authorId) !== req.user.id) {
-      res.status(401).json({ msg: "User not authorized to view these posts" });
-    }
-
     try {
+      if (parseInt(req.params.authorId) !== req.user.id) {
+        res
+          .status(401)
+          .json({ msg: "User not authorized to view these posts" });
+      }
+
       const posts = await db.getAuthorPosts(req.user.id);
       res.status(200).json({ posts: posts });
     } catch (err) {
@@ -53,14 +62,20 @@ const getAuthorPostById = [
 ];
 
 const editPost = [
+  validateTitle,
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
-    const post = await db.getPostById(parseInt(req.params.postId));
-    if (post.author.id !== req.user.id) {
-      res.status(401).json({ msg: "User not authorized to edit this post" });
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ msg: "Title must be at least 1 character long." });
     }
 
     try {
+      const post = await db.getPostById(parseInt(req.params.postId));
+      if (post.author.id !== req.user.id) {
+        res.status(401).json({ msg: "User not authorized to edit this post" });
+      }
+
       const updatedPost = await db.updatePost(
         post.id,
         req.body.title,
@@ -75,8 +90,14 @@ const editPost = [
 ];
 
 const createPost = [
+  validateTitle,
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ msg: "Title must be at least 1 character long." });
+    }
+
     try {
       const post = await db.createPost(
         req.user.id,
@@ -92,6 +113,25 @@ const createPost = [
   },
 ];
 
+const deletePost = [
+  passport.authenticate("jwt", { session: false }),
+  async (req, res, next) => {
+    try {
+      const post = await db.getPostById(parseInt(req.params.postId));
+      if (post.author.id !== req.user.id) {
+        res
+          .status(401)
+          .json({ msg: "User not authorized to delete this post" });
+      }
+
+      const deletedPost = await db.deletePost(post.id);
+      res.status(200).json({ deletedPost: deletedPost });
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
+
 module.exports = {
   getAllPosts,
   getPostById,
@@ -99,4 +139,5 @@ module.exports = {
   getAuthorPostById,
   editPost,
   createPost,
+  deletePost,
 };

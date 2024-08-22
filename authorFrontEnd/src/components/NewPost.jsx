@@ -6,6 +6,7 @@ export default function NewPost() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [published, setPublished] = useState(false);
+  const [error, setError] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -29,7 +30,7 @@ export default function NewPost() {
       navigate("/");
     } else {
       const errors = await res.json();
-      console.log(errors);
+      setError(errors.msg);
     }
   }
 
@@ -104,9 +105,10 @@ export default function NewPost() {
           onChange={(e) => setContent(e.target.value)}
           value={content}
         ></textarea>
-        <button className="border border-black rounded-sm px-4 w-24 mb-4">
+        <button className="border border-black rounded-sm px-4 w-24">
           Post!
         </button>
+        {error && <p>{error}</p>}
       </form>
     </div>
   );

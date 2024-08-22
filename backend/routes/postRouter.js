@@ -8,5 +8,6 @@ postRouter.get("/:postId", postController.getPostById);
 postRouter.get("/:postId/author", postController.getAuthorPostById);
 postRouter.post("/edit/:postId", postController.editPost);
 postRouter.post("/create", postController.createPost);
+postRouter.post("/delete/:postId", postController.deletePost);
 
 module.exports = postRouter;

@@ -1,4 +1,4 @@
-import { Link, useParams, useLocation } from "react-router-dom";
+import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import NavBar from "./NavBar";
 import Comment from "./Comment";
@@ -6,11 +6,13 @@ import Comment from "./Comment";
 export default function Post() {
   const params = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const [post, setPost] = useState(null);
   const [newComment, setNewComment] = useState("");
   const [newCommentErrors, setNewCommentErrors] = useState([]);
   const [editPostMode, setEditPostMode] = useState(false);
   const [editedPost, setEditedPost] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/posts/${params.postId}/author`, {
@@ -25,7 +27,7 @@ export default function Post() {
       })
       .then((res) => {
         if (res.msg) {
-          throw(res.msg);
+          throw res.msg;
         }
         setPost(res.post);
         setEditedPost({
@@ -99,7 +101,29 @@ export default function Post() {
 
     if (res.status === 200) {
       setEditPostMode(false);
+      setError(null);
       refreshPost();
+    } else {
+      const errors = await res.json();
+      setError(errors.msg);
+    }
+  }
+
+  async function deletePost() {
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/posts/delete/${post.id}`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+      }
+    );
+
+    if (res.status === 200) {
+      navigate("/");
     } else {
       const errors = await res.json();
       console.log(errors);
@@ -176,9 +200,18 @@ export default function Post() {
                 }
                 value={editedPost.content}
               ></textarea>
-              <button className="border border-black rounded-sm px-4 w-24 mb-4">
-                Done
-              </button>
+              <div className="flex justify-between">
+                <button className="border border-black rounded-sm px-4">
+                  Done
+                </button>
+                <button
+                  className="rounded-sm px-4 text-red-900 font-bold bg-red-500"
+                  onClick={(e) => deletePost(e)}
+                >
+                  Delete Post
+                </button>
+              </div>
+              {error && <p>{error}</p>}
             </form>
           </div>
         ) : (
@@ -193,12 +226,20 @@ export default function Post() {
                 : "Unpublished"}
             </p>
             <p className="mb-4">{post.content}</p>
-            <button
-              className="border border-black rounded-sm px-4 w-24"
-              onClick={() => setEditPostMode(true)}
-            >
-              Edit Post
-            </button>
+            <div className="flex gap-8 justify-between">
+              <button
+                className="border border-black rounded-sm px-4"
+                onClick={() => setEditPostMode(true)}
+              >
+                Edit Post
+              </button>
+              <button
+                className="rounded-sm px-4 text-red-900 font-bold bg-red-500"
+                onClick={(e) => deletePost(e)}
+              >
+                Delete Post
+              </button>
+            </div>
           </div>
         )}
         <hr className="border border-gray-500 my-8"></hr>
