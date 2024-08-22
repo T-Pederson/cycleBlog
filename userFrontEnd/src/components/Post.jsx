@@ -5,10 +5,10 @@ import Comment from "./Comment";
 
 export default function Post() {
   const params = useParams();
+  const location = useLocation();
   const [post, setPost] = useState(null);
   const [newComment, setNewComment] = useState("");
   const [newCommentErrors, setNewCommentErrors] = useState([]);
-  const location = useLocation();
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/posts/${params.postId}`, {
@@ -80,9 +80,7 @@ export default function Post() {
     <div className="max-w-6xl m-4 sm:mx-auto grid gap-8">
       <NavBar />
       <div>
-        <h1 className="font-extrabold text-3xl mx-auto mb-4">
-          {post.title}
-        </h1>
+        <h1 className="font-extrabold text-3xl mx-auto mb-4">{post.title}</h1>
         <p className="mb-4 font-semibold">
           {post.author.username} -{" "}
           {new Date(post.publishedAt).toLocaleDateString()}

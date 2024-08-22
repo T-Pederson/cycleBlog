@@ -50,6 +50,7 @@ async function getPostById(id) {
       id: true,
       title: true,
       content: true,
+      published: true,
       publishedAt: true,
       author: {
         select: {
