@@ -171,7 +171,6 @@ export default function Post() {
               ></textarea>
               <button
                 className="border border-black rounded-sm px-4 w-24 mb-4"
-                onClick={editPost}
               >
                 Done
               </button>

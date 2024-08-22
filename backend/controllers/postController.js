@@ -69,10 +69,28 @@ const editPost = [
   },
 ];
 
+const createPost = [
+  passport.authenticate("jwt", { session: false }),
+  async (req, res, next) => {
+    try {
+      const post = await db.createPost(
+        req.user.id,
+        req.body.title,
+        req.body.content,
+        req.body.published,
+      );
+      res.status(200).json({ post: post });
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
+
 module.exports = {
   getAllPosts,
   getPostById,
   getAuthorPosts,
   getAuthorPostById,
   editPost,
+  createPost,
 };

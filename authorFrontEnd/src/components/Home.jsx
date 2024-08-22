@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import PostPreview from "./PostPreview";
 import NavBar from "./NavBar";
 
@@ -25,15 +26,21 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="max-w-6xl m-4 sm:mx-auto grid gap-8">
+    <div className="max-w-6xl m-4 sm:mx-auto grid gap-4 sm:gap-8">
       <NavBar />
       <h1 className="font-extrabold text-3xl mx-auto">
         Cycle Blog Author Site
       </h1>
       <p className="mx-auto self-center">
-        Authors only site to create and edit Cycle Blog posts.
+        Authors only site to create and edit posts.
       </p>
-      <div className="grid gap-8">
+      <a
+        href={import.meta.env.VITE_USER_FRONT_END_URL}
+        className="mx-auto self-center underline hover:opacity-65"
+      >
+        Visit the User site here!
+      </a>
+      <div className="grid gap-8 mt-4 sm:mt-0">
         {localStorage.getItem("token") && posts !== undefined ? (
           posts.length > 0 ? (
             posts.map((post) => <PostPreview post={post} key={post.id} />)
@@ -44,7 +51,14 @@ export default function Home() {
           )
         ) : (
           <p className="mx-auto self-center">
-            Login or Sign up to create and edit your posts.
+            <Link to="/login" className="underline hover:opacity-65">
+              Login
+            </Link>{" "}
+            or{" "}
+            <Link to="/sign-up" className="underline hover:opacity-65">
+              Sign up
+            </Link>{" "}
+            to create and edit your posts.
           </p>
         )}
       </div>
