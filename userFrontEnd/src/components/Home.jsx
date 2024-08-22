@@ -24,7 +24,7 @@ export default function Home() {
         Welcome to Cycle Blog!
       </h1>
       <p className="mx-auto self-center">
-        A blog where I document my cycling journey.
+        A blog to discuss all things cycling.
       </p>
       <a
         href={import.meta.env.VITE_AUTHOR_FRONT_END_URL}
