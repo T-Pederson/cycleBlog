@@ -61,11 +61,16 @@ export default function Comment({ comment, refreshPost }) {
   return (
     <div className="grid gap-2 my-4">
       <div className="flex gap-4 items-baseline">
-      <div>
+        <div>
           <span className="font-semibold">{comment.author.username} </span>
           <span>
-            {new Date(comment.commentedAt).toLocaleString([], {
-              timeStyle: "short",
+            {new Date(comment.commentedAt).toLocaleDateString("en-US", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "2-digit",
+              hour: "numeric",
+              minute: "2-digit",
+              hour12: true,
             })}
           </span>
         </div>

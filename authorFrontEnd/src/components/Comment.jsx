@@ -64,8 +64,13 @@ export default function Comment({ comment, authorId, refreshPost }) {
       <div>
           <span className="font-semibold">{comment.author.username} </span>
           <span>
-            {new Date(comment.commentedAt).toLocaleString([], {
-              timeStyle: "short",
+            {new Date(comment.commentedAt).toLocaleDateString("en-US", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "2-digit",
+              hour: "numeric",
+              minute: "2-digit",
+              hour12: true,
             })}
           </span>
         </div>
