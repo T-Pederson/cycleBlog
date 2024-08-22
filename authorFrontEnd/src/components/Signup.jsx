@@ -40,8 +40,8 @@ export default function Signup() {
         <p className="mb-4">
           Thank you, {newUser.username} for creating an account!
         </p>
-        <Link to={from} className="self-center underline">
-          Done
+        <Link to="/login" className="self-center underline">
+          Login with your new account!
         </Link>
       </div>
     );
