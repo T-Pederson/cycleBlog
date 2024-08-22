@@ -51,13 +51,14 @@ async function findUserById(id) {
 }
 
 // Post
-async function createPost(authorId, title, content, published) {
+async function createPost(authorId, title, content, published, publishedAt) {
   return await prisma.post.create({
     data: {
       authorId,
       title,
       content,
       published,
+      publishedAt,
     },
   });
 }

@@ -82,7 +82,8 @@ const createPost = [
         req.user.id,
         req.body.title,
         req.body.content,
-        req.body.published
+        req.body.published,
+        req.body.published ? new Date() : null
       );
       res.status(200).json({ post: post });
     } catch (err) {
