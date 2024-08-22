@@ -17,10 +17,16 @@ export default function Post() {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
       },
     })
-      .then((res) => res.json())
       .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        if (res.msg) {
+          throw(res.msg);
+        }
         setPost(res.post);
         setEditedPost({
           title: res.post.title,
@@ -36,6 +42,7 @@ export default function Post() {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
       },
     })
       .then((res) => res.json())
@@ -169,9 +176,7 @@ export default function Post() {
                 }
                 value={editedPost.content}
               ></textarea>
-              <button
-                className="border border-black rounded-sm px-4 w-24 mb-4"
-              >
+              <button className="border border-black rounded-sm px-4 w-24 mb-4">
                 Done
               </button>
             </form>

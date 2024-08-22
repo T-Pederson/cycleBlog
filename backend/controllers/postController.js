@@ -40,6 +40,11 @@ const getAuthorPostById = [
   async (req, res, next) => {
     try {
       const post = await db.getPostById(parseInt(req.params.postId));
+      if (post.author.id !== req.user.id) {
+        return res
+          .status(401)
+          .json({ msg: "User is not authorized to view this post" });
+      }
       res.status(200).json({ post: post });
     } catch (err) {
       return next(err);
@@ -77,7 +82,7 @@ const createPost = [
         req.user.id,
         req.body.title,
         req.body.content,
-        req.body.published,
+        req.body.published
       );
       res.status(200).json({ post: post });
     } catch (err) {

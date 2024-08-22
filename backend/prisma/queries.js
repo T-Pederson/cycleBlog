@@ -30,8 +30,8 @@ async function convertUserToAuthor(id) {
     },
     data: {
       isAuthor: true,
-    }
-  })
+    },
+  });
 }
 
 async function findUserByUsername(username) {
@@ -144,15 +144,22 @@ async function getAuthorPosts(authorId) {
 }
 
 async function updatePost(id, title, content, published) {
+  const data = {
+    title,
+    content,
+    published,
+    publishedAt: null,
+  };
+
+  if (published) {
+    data.publishedAt = new Date();
+  }
+
   return await prisma.post.update({
     where: {
       id,
     },
-    data: {
-      title,
-      content,
-      published,
-    },
+    data,
   });
 }
 
@@ -187,7 +194,7 @@ async function getComment(id) {
           author: {
             select: {
               id: true,
-            }
+            },
           },
         },
       },

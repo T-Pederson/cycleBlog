@@ -11,7 +11,7 @@ export default function NewPost() {
 
   async function submitPost(e) {
     e.preventDefault();
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/posts/new`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/posts/create`, {
       method: "POST",
       headers: {
         Accept: "application/json",

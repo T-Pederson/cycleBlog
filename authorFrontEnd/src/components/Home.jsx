@@ -46,7 +46,8 @@ export default function Home() {
             posts.map((post) => <PostPreview post={post} key={post.id} />)
           ) : (
             <p className="mx-auto self-center">
-              No posts yet, create your first post here!
+              No posts yet, create your first post{" "}
+              <Link to="/new-post" className="underline hover:opacity-65">here!</Link>
             </p>
           )
         ) : (
