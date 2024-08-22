@@ -20,7 +20,24 @@ async function getPostById(req, res, next) {
   }
 }
 
+const getAuthorPosts = [
+  passport.authenticate("jwt", { session: false }),
+  async (req, res, next) => {
+    if (parseInt(req.params.authorId) !== req.user.id) {
+      res.status(401).json({ msg: "User not authorized to view these posts" });
+    }
+
+    try {
+      const posts = await db.getAuthorPosts(req.user.id);
+      res.status(200).json({ posts: posts });
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
+
 module.exports = {
   getAllPosts,
   getPostById,
+  getAuthorPosts,
 };

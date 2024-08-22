@@ -50,6 +50,27 @@ const deleteComment = [
   },
 ];
 
+const authorDeleteComment = [
+  passport.authenticate("jwt", { session: false }),
+  async (req, res, next) => {
+    try {
+      const comment = await db.getComment(parseInt(req.params.commentId));
+      if (comment.post.author.id !== req.user.id) {
+        res
+          .status(401)
+          .json({ msg: "User not authorized to delete this comment" });
+      }
+
+      const deletedComment = await db.deleteComment(
+        parseInt(req.params.commentId)
+      );
+      res.status(200).json({ comment: deletedComment });
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
+
 const editComment = [
   validateComment,
   passport.authenticate("jwt", { session: false }),
@@ -80,5 +101,6 @@ const editComment = [
 module.exports = {
   createComment,
   deleteComment,
+  authorDeleteComment,
   editComment,
 };

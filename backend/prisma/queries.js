@@ -53,6 +53,7 @@ async function getPostById(id) {
       publishedAt: true,
       author: {
         select: {
+          id: true,
           username: true,
         },
       },
@@ -98,6 +99,28 @@ async function getAllPosts() {
   });
 }
 
+async function getAuthorPosts(authorId) {
+  return await prisma.post.findMany({
+    where: {
+      authorId,
+    },
+    select: {
+      id: true,
+      title: true,
+      content: true,
+      publishedAt: true,
+      author: {
+        select: {
+          username: true,
+        },
+      },
+    },
+    orderBy: {
+      id: "desc",
+    },
+  });
+}
+
 async function updatePost(id, title, content, published) {
   return await prisma.post.update({
     where: {
@@ -135,6 +158,21 @@ async function getComment(id) {
     where: {
       id,
     },
+    select: {
+      id: true,
+      post: {
+        select: {
+          author: {
+            select: {
+              id: true,
+            }
+          },
+        },
+      },
+      authorId: true,
+      content: true,
+      commentedAt: true,
+    },
   });
 }
 
@@ -165,6 +203,7 @@ module.exports = {
   createPost,
   getPostById,
   getAllPosts,
+  getAuthorPosts,
   updatePost,
   deletePost,
   createComment,
