@@ -11,17 +11,47 @@ export default function Login() {
 
   async function submitLogin(e) {
     e.preventDefault();
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/user/login`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-      }),
-    });
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/user/login/author`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      }
+    );
+
+    if (res.status === 200) {
+      const user = await res.json();
+      localStorage.setItem("token", "Bearer " + user.token);
+      navigate(from);
+    } else {
+      const error = await res.json();
+      setError([error.msg]);
+    }
+  }
+
+  async function convertUserToAuthor(e) {
+    e.preventDefault();
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/user/convertUserToAuthor`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      }
+    );
 
     if (res.status === 200) {
       const user = await res.json();
@@ -64,7 +94,17 @@ export default function Login() {
               className="border border-black rounded-sm mb-4 max-w-48 appearance-none py-2 px-3 text-gray-700 leading-tight"
             />
           </div>
-          {error && <p className="mb-4">{error}</p>}
+          {error && (
+            <div>
+              <p className="mb-4 text-center">{error}</p>
+              <p
+                className="mb-4 text-center underline hover:cursor-pointer"
+                onClick={(e) => convertUserToAuthor(e)}
+              >
+                Become an author!
+              </p>
+            </div>
+          )}
           <button className="border border-black rounded-sm px-4 w-24 mb-4 hover:opacity-65">
             Login
           </button>

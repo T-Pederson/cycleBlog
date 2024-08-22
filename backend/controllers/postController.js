@@ -35,6 +35,18 @@ async function getPostById(req, res, next) {
   }
 }
 
+const getAuthorPostById = [
+  passport.authenticate("jwt", { session: false }),
+  async (req, res, next) => {
+    try {
+      const post = await db.getPostById(parseInt(req.params.postId));
+      res.status(200).json({ post: post });
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
+
 const editPost = [
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
@@ -61,5 +73,6 @@ module.exports = {
   getAllPosts,
   getPostById,
   getAuthorPosts,
+  getAuthorPostById,
   editPost,
 };

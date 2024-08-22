@@ -13,6 +13,27 @@ async function createUser(username, password, isAuthor = false) {
   });
 }
 
+async function createAuthor(username, password, isAuthor = true) {
+  return await prisma.user.create({
+    data: {
+      username,
+      password,
+      isAuthor,
+    },
+  });
+}
+
+async function convertUserToAuthor(id) {
+  return await prisma.user.update({
+    where: {
+      id,
+    },
+    data: {
+      isAuthor: true,
+    }
+  })
+}
+
 async function findUserByUsername(username) {
   return await prisma.user.findUnique({
     where: {
@@ -199,6 +220,8 @@ async function deleteComment(id) {
 
 module.exports = {
   createUser,
+  createAuthor,
+  convertUserToAuthor,
   findUserByUsername,
   findUserById,
   createPost,

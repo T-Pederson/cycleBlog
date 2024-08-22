@@ -13,7 +13,7 @@ export default function Post() {
   const [editedPost, setEditedPost] = useState(null);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/posts/${params.postId}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/posts/${params.postId}/author`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -32,7 +32,7 @@ export default function Post() {
   }, [params.postId]);
 
   function refreshPost() {
-    fetch(`${import.meta.env.VITE_API_URL}/posts/${params.postId}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/posts/${params.postId}/author`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
